@@ -6,15 +6,15 @@ Durable quality record for this project. Read it before a run; append to it befo
 
 | Field | Value |
 |---|---|
-| Last build scored | <commit / build no. / URL> |
+| Last build scored | <commit / build no. / URL + entry and bundle hashes> |
 | Result | <PASS / FAIL>, avg <x.xx> (Experience <s> · Function <s> · Consumer <s> · Engineering <s>) |
 | Judge | <independent / self>, <date> |
-| Round counter (this session) | <n> of <cap> |
+| Fix rounds (this session) | <n> of <cap> |
 | Open blockers | <count, IDs> |
 
 ## Verification records
 
-A check listed here is done for the build or source hash it names. Re-run it only when the hash changes or an invalidating change lands.
+A check listed here is done for the build or source hash it names. Re-run it only when the hash changes or an invalidating change lands. A URL alone never identifies a build.
 
 | Date | Criterion / scope | Bound to | Result | Invalidated by |
 |---|---|---|---|---|
@@ -22,23 +22,25 @@ A check listed here is done for the build or source hash it names. Re-run it onl
 
 ## Ratchet guards
 
-Every fixed finding leaves a guard. Removing a guard needs the owner's approval and a reason here.
+Every fixed finding leaves a guard. Audit rounds propose guards; improve rounds install them. Removing a guard needs the owner's approval and a reason here.
 
-| Criterion | Defect | Guard (test, lint, CI check, checklist line) | Added |
-|---|---|---|---|
-| <FN-2> | <draft lost after kill during save> | <test_kill_during_save> | <date, commit> |
+| Criterion | Defect | Guard (test, lint, CI check, checklist line) | Status | Added |
+|---|---|---|---|---|
+| <FN-2> | <draft lost after kill during save> | <test_kill_during_save> | <proposed / installed> | <date, commit> |
 
 ## Rounds
 
-### Round <n> · <YYYY-MM-DD> · build <id>
+Audit rounds are `audit <n>`; fix rounds are `fix <n>` and count toward the cap.
 
-- Mode: <audit / improve / maintain>; scope: <full / changed since round n-1>
+### <audit 1 | fix 1> · <YYYY-MM-DD> · build <id>
+
+- Mode: <audit / improve / maintain>; scope: <full / changed since last round>
 - Scores: Experience <s> · Function <s> · Consumer <s> · Engineering <s> → avg <x.xx> <PASS/FAIL>
 - Floors: <all pass / F-x breached: receipt>
 - Fixed: <[ID] what, guard>
 - Deferred: <[ID] why, trigger to revisit>
 - Open, in order of impact: <[ID] receipt -> concrete change>
-- Evidence gaps: <criteria with no receipt>
+- Evidence gaps and n/a: <criteria with no receipt; n/a with reason>
 - Receipts: <evidence_dir path>
 
 ## Exceptions and decisions
