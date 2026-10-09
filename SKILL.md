@@ -1,6 +1,6 @@
 ---
 name: quality-loop
-description: Raise and hold product quality for an iPhone app, website, web app, game, or other software service across four dimensions (UI/UX experience, function, consumer trust, engineering) with a scored bar, hard floors, an independent judge, and a ledger that ratchets every fix. Use to audit quality, run improve rounds until the bar is met, gate a release candidate, or maintain quality on each change or on a schedule. Triggers: 완성도, 품질 기준, 품질 개선 루프, production-ready, quality gate, quality audit.
+description: Product quality bar and improvement loop for iPhone apps, websites, web apps, games, and other software. Scores UI/UX, function, consumer trust, and engineering against hard floors, gates release candidates with an independent judge, and ratchets every fix in a ledger. Use to audit quality, bring a product up to the bar, gate a release candidate, or maintain quality per change or on a schedule (완성도, 품질 개선 루프).
 license: MIT
 ---
 
@@ -32,9 +32,9 @@ Green tests prove the code does what the tests say. They do not prove the produc
 
 | Mode | Does | Edits product code |
 |---|---|---|
-| `audit` | Steps 0-4, then report. | No |
+| `audit` | Steps 0-4, then 7 and 8 with no fix round: record the baseline in the ledger, propose guards, clean up, report. | No |
 | `improve` (default) | Steps 0-8, fix rounds until the bar or the round cap. | Yes |
-| `maintain` | Step 0, then steps 1-7 scoped to what changed since the last ledger receipt, plus field signals (CS-7). Full audit on a release candidate. Runs per change, per PR, or on a schedule (`/loop`). | Yes, within scope |
+| `maintain` | Step 0, then steps 1-8 scoped to what changed since the last ledger receipt, plus field signals (CS-7). Full audit on a release candidate. Runs per change, per PR, or on a schedule (`/loop`). | Yes, within scope |
 
 ## Specialist skills
 
@@ -53,15 +53,15 @@ Use these when installed; otherwise use the fallback in `standard.md`. Name them
 
 ### 0. Frame
 
-Read repository instructions, the override (`.quality.md`, else `docs/quality.md`), and the ledger (path in the override, default `QUALITY-LEDGER.md`). If no override exists, draft one from `templates/quality.md`: infer the profile, core journeys, devices, and languages from the code; leave reference products and the dimension list for the owner.
+Read repository instructions, the override (`.quality.md`, else `docs/quality.md`), and the ledger (path in the override, default `QUALITY-LEDGER.md`). If no override exists, draft one from `templates/quality.md`: infer the profile, core journeys, devices, and languages from the code, or from the shipped artifact when there is no source, and label them inferred.
 
-Before a fix round, the owner confirms three things: the dimensions in scope, the core journeys, and 1-3 reference products the result must hold up against. Audit mode may proceed on stated defaults.
+Before the first fix round, the owner confirms three things: the dimensions in scope, the core journeys, and 1-3 reference products the result must hold up against. The override's `confirmed_by` records it; later runs reuse it until the owner changes it. Audit mode may proceed on stated defaults: keep all four dimensions, and with no owner pick a reference product yourself, label it `agent-chosen`, and mark UX-5 and CS-1 provisional.
 
 Done when: profile, dimensions, core journeys (each with a done-when), devices, languages, reference products, bar, and budgets are written in the override.
 
 ### 1. Baseline
 
-Identify the build: commit, dirty diff, build number or deployed URL, tool versions. Build or serve the **shipped artifact** (release/exported build, production bundle), not only the editor or a debug run. Check the ledger: a criterion whose receipt is bound to this exact build or source hash is already verified; skip it and say so.
+Identify the build: commit, dirty diff, build number, tool versions; for a deployed URL, the SHA-256 of the entry document and main bundles, since a URL alone can serve changed assets. Build or serve the **shipped artifact** (release/exported build, production bundle), not only the editor or a debug run. Check the ledger: a criterion whose receipt is bound to this exact build or source hash is already verified; skip it and say so. URL equality alone never skips a check.
 
 Done when: build identity is recorded and the evidence matrix (criteria x devices x languages x states) lists what this round will capture.
 
@@ -73,15 +73,15 @@ Done when: every in-scope criterion has a receipt or is listed as an evidence ga
 
 ### 3. Score and write findings
 
-Score each dimension with `scorecard.md`. Mark each criterion pass, fail, or gap. Write each finding as: criterion ID, severity (blocker, major, minor, polish), receipt, and a concrete change with numbers.
+Score each dimension with `scorecard.md`. Mark each criterion pass, fail, gap, or n/a with its reason (`standard.md` defines them). Write each finding as: criterion ID, severity (blocker, major, minor, polish), receipt, and a concrete change with numbers. In audit mode, name the guard each fix should leave as a proposal.
 
 Done when: the score sheet is complete and every finding cites a receipt.
 
 ### 4. Gate
 
-The bar is met when every in-scope dimension passes, all floors pass, and, for a release candidate, the judge agrees. Send the judge prompt in `scorecard.md` to a separate agent with receipts only.
+The bar is met when every in-scope dimension passes, all floors pass, and, for a release candidate, the judge agrees. Send the judge prompt in `scorecard.md` to a separate agent with receipts only. An audit or a non-release round may self-score, labeled `Judge: self`; a self-score never closes a release gate.
 
-Bar met: go to step 8. Audit mode: report and stop. Otherwise: step 5.
+Bar met: go to step 8. Audit mode: step 7. Otherwise: step 5.
 
 ### 5. Fix round
 
@@ -97,11 +97,11 @@ Done when: new receipts exist for this build and the judge has scored it.
 
 ### 7. Record and repeat
 
-Append the round to the ledger: build, date, scores, fixed, open, guards added, and which future changes invalidate each receipt. Keep the round counter in the ledger, not in memory. Bar met: step 8. Below the bar and under the round cap (default 3 per session): step 5. Cap reached: stop and report the remaining findings with receipts; churning past the cap wastes the owner's money.
+Append the round to the ledger: build, date, scores, fixed, open, guards added or proposed, and which future changes invalidate each receipt. Audit rounds are `audit n`; fix rounds are `fix n` and are the ones the cap counts. Keep the counter in the ledger, not in memory. Bar met or audit mode: step 8. Below the bar and under the round cap (default 3 fix rounds per session): step 5. Cap reached: stop and report the remaining findings with receipts; churning past the cap wastes the owner's money.
 
 ### 8. Close
 
-Write the verification record to the ledger (scope, date, build, judge verdict). Stop simulators, emulators, servers, and processes this run created; delete simulator clones it made. Report in this shape:
+Every mode ends here. Write the verification record to the ledger (scope, date, build, judge verdict). Stop simulators, emulators, servers, browsers, and processes this run created; delete simulator clones it made; leave the owner's own devices and sessions alone. Report in this shape:
 
 ```
 quality-loop · improve · profile: ios-app · build 1.2.0 (14) @ a1b2c3d · 2026-10-09

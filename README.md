@@ -20,7 +20,9 @@ Profiles: iPhone app, web (site, web app, PWA), game, and others mapped to the c
 
 ISO/IEC 25010:2023, Apple Human Interface Guidelines and App Review Guidelines, Apple's launch (400 ms first frame) and hang (250 ms) guidance, WCAG 2.2 AA, Core Web Vitals (LCP 2.5 s, INP 200 ms, CLS 0.1 at p75), OWASP MASVS v2.1 and ASVS 5.0, Google Play vitals, Nielsen's heuristics, the HEART framework, SUS, the FTC dark-patterns report, and Korea's e-commerce dark-pattern rules (in force 2025-02-14). Links are in [`references.md`](references.md).
 
-It also carries [found practices](found-practices.md): 15 lessons from real 2026 releases with coding agents. One game passed 339 tests and still felt unfinished. One app was rejected because a dialog clipped on iPad. One resume bug came back because UI tests were missing from the runner. Each lesson became a rule.
+It also carries [found practices](found-practices.md): 16 lessons from real 2026 releases with coding agents. One game passed 339 tests and still felt unfinished. One app was rejected because a dialog clipped on iPad. One resume bug came back because UI tests were missing from the runner. Each lesson became a rule.
+
+Before publishing, the skill was forward-tested: a fresh agent with no owner and no source audited a deployed Korean web app using only these files. It found three floor breaches with receipts and reported 32 ambiguities in the wording, which this version fixes.
 
 ## Install
 

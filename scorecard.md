@@ -1,6 +1,6 @@
 # Scorecard
 
-Score each in-scope dimension 1-5 (half points allowed) from receipts of one build. Use the lowest score across devices and languages. A floor breach caps its dimension at 3. A criterion with no receipt is a gap; a dimension with gaps in more than a quarter of its criteria cannot score above 3.
+Score each in-scope dimension 1-5 (half points allowed) from receipts of one build. Use the lowest score across devices and languages. A floor breach caps its dimension at 3. A criterion with no receipt is a gap; n/a criteria leave the denominator; a dimension with gaps in more than a quarter of its remaining criteria cannot score above 3. A gap counts against the bar the way a fail does, but it is reported as missing evidence, never as a product defect.
 
 **Default bar:** every in-scope dimension >= 4, average >= 4.3, all floors pass, and for a release candidate the judge's verdict is PASS. The override can raise the bar or drop a dimension the owner verifies personally; it cannot lower a floor.
 
@@ -44,7 +44,7 @@ Bar: dims >= 4, avg >= 4.3, floors pass
 Average: x.xx   Result: PASS | FAIL
 Findings, in order of impact:
 1. [FN-2, F-2] blocker: draft lost after kill during save (resume_se3_ko_after_kill.png) -> write to temp file, fsync, rename; guard: test_kill_during_save
-Evidence gaps: <criteria with no receipt>
+Evidence gaps: <criteria with no receipt>   n/a: <criteria and reason>
 ```
 
 ## Judge prompt
@@ -73,7 +73,7 @@ contrast >= 4.5:1, targets >= 44 pt (iOS) / 24 CSS px (web), iOS text >= 11 pt;
 every screen fits on every device class including iPad compatibility mode;
 declared data collection matches actual; no deceptive pricing, renewal, pre-selection, or cancel friction;
 in-product account deletion if accounts exist; no weakened or skipped checks.
-Receipts that are missing, stale, vacuous (a test that asserts nothing), or flaky count as FAIL for that criterion.
+A criterion with no receipt is a gap and blocks PASS; a stale, vacuous (asserts nothing), or flaky receipt counts as FAIL for that criterion. A criterion marked n/a with a reason you accept leaves the count.
 
 Bar: every dimension >= <4>, average >= <4.3>, all floors pass.
 
