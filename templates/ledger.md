@@ -7,7 +7,7 @@ Durable quality record for this project. Read it before a run; append to it befo
 | Field | Value |
 |---|---|
 | Last build scored | <commit / build no. / URL + entry and bundle hashes> |
-| Result | <PASS / FAIL>, avg <x.xx> (Experience <s> · Function <s> · Consumer <s> · Engineering <s>) |
+| Result | <PASS / FAIL>, quality <xx>%, avg <x.xx> (Experience <s> · Function <s> · Consumer <s> · Engineering <s>) |
 | Judge | <independent / self>, <date> |
 | Fix rounds (this session) | <n> of <cap> |
 | Open blockers | <count, IDs> |
@@ -35,7 +35,8 @@ Audit rounds are `audit <n>`; fix rounds are `fix <n>` and count toward the cap.
 ### <audit 1 | fix 1> · <YYYY-MM-DD> · build <id>
 
 - Mode: <audit / improve / maintain>; scope: <full / changed since last round>
-- Scores: Experience <s> · Function <s> · Consumer <s> · Engineering <s> → avg <x.xx> <PASS/FAIL>
+- Scores: Experience <s> · Function <s> · Consumer <s> · Engineering <s> → avg <x.xx>, quality <xx>% <PASS/FAIL>
+- Why not higher: <dimension: points lost, finding IDs>
 - Floors: <all pass / F-x breached: receipt>
 - Fixed: <[ID] what, guard>
 - Deferred: <[ID] why, trigger to revisit>

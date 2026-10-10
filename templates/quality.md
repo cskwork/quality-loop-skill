@@ -24,7 +24,7 @@ autosave_interval_ms: 1000  # F-2: the last edit must persist within this, and b
 input_limits: <declared maximum per field, or "none declared">
 bar:
   min_dimension: 4
-  min_average: 4.3
+  min_average: 4.5   # quality >= 90%
   judge: independent        # release candidates always use an independent judge
 budgets:                    # raise freely; lowering below a source number needs a reason
   ios_first_frame_ms: 400
