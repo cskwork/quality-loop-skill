@@ -9,7 +9,7 @@ Coding agents ship builds that pass every test and still feel like prototypes. L
 
 - **Four dimensions** scored 1-5: **Experience** (UI/UX), **Function** (every core journey and boundary), **Consumer** (first-run success, trust, honest pricing, store accuracy), **Engineering** (tests, performance budgets, stability, security, release hygiene).
 - **Ten floors** that no score can buy back: no crash or data loss in a core journey, accessibility minimums, every device class including iPad compatibility mode, declared data matches actual, no dark patterns, in-app account deletion, no weakened checks.
-- **A bar**: every dimension >= 4, average >= 4.3, all floors pass. For a release candidate, an independent judge has to agree. The judge sees only evidence, never the code.
+- **A bar**: every dimension >= 4, average >= 4.5 (quality >= 90%), all floors pass. Every report opens with the quality % and why each point was lost. For a release candidate, an independent judge has to agree. The judge sees only evidence, never the code.
 - **A loop**: frame → baseline the shipped build → collect receipts → score → gate → fix round (max 8 findings) → verify → record → repeat, capped at 3 rounds per session.
 - **A ledger** in the project that binds every receipt to a build, so passed checks are not re-run. A **ratchet** means every fix leaves a test or check behind, so quality only moves up.
 - **Three modes**: `audit` (read-only report), `improve` (fix until the bar), `maintain` (per change, per PR, or scheduled with `/loop`).
@@ -50,7 +50,7 @@ Then ask your agent: "run quality-loop audit on this app", "bring this site to t
 
 `quality-loop`은 아이폰 앱, 웹사이트, 웹앱, 게임 같은 소프트웨어 서비스의 완성도를 높이고 유지하는 에이전트 스킬입니다. 네 가지 기준으로 1~5점을 매깁니다. **경험**(UI/UX), **기능**(핵심 사용 흐름과 경계 상황), **소비자**(첫 사용 성공, 신뢰, 정직한 가격, 스토어 정확성), **개발 완성도**(테스트, 성능 예산, 안정성, 보안, 출시 위생)입니다.
 
-통과 기준은 모든 항목 4점 이상, 평균 4.3점 이상, 최소 기준(floor) 10개 전부 통과입니다. 출시 후보는 코드를 보지 않고 증거만 보는 별도 심사 에이전트가 판정합니다. 루프는 기준 정하기 → 출시 빌드 확인 → 증거 수집 → 채점 → 판정 → 수정(한 번에 최대 8건) → 재검증 → 기록 순서로 돌고, 세션당 3회가 넘으면 멈추고 보고합니다. 모든 검증 결과는 프로젝트 원장(ledger)에 빌드 단위로 기록해서 같은 검사를 반복하지 않습니다. 고친 결함마다 테스트나 체크 항목을 하나씩 남겨서 품질이 다시 떨어지지 않게 막습니다.
+통과 기준은 모든 항목 4점 이상, 평균 4.5점 이상(품질 90% 이상), 최소 기준(floor) 10개 전부 통과입니다. 출시 후보는 코드를 보지 않고 증거만 보는 별도 심사 에이전트가 판정합니다. 루프는 기준 정하기 → 출시 빌드 확인 → 증거 수집 → 채점 → 판정 → 수정(한 번에 최대 8건) → 재검증 → 기록 순서로 돌고, 세션당 3회가 넘으면 멈추고 보고합니다. 모든 검증 결과는 프로젝트 원장(ledger)에 빌드 단위로 기록해서 같은 검사를 반복하지 않습니다. 고친 결함마다 테스트나 체크 항목을 하나씩 남겨서 품질이 다시 떨어지지 않게 막습니다.
 
 ## License
 

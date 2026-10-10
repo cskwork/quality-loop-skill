@@ -8,7 +8,8 @@ license: MIT
 
 One standard and one loop for "is this product good enough for a paying consumer, and does it stay that way?"
 
-- **Bar**: every in-scope dimension scores >= 4 of 5, average >= 4.3, all floors pass. A project can raise it; floors never relax.
+- **Bar**: every in-scope dimension scores >= 4 of 5, average >= 4.5 (quality >= 90%), all floors pass. A project can raise it; floors never relax.
+- **Quality %**: the average score / 5 x 100, rounded down to a whole number. Every report opens with it and the reason for each lost point.
 - **Floor**: a hard minimum (crash, data loss, broken core journey, accessibility minimum, deceptive design...). Any floor breach caps its dimension at 3 and blocks release.
 - **Receipt**: evidence bound to one build (commit or build number, date, device, language). A receipt from another build is stale.
 - **Ledger**: the project's durable quality record. Read it first, write it last.
@@ -101,12 +102,17 @@ Append the round to the ledger: build, date, scores, fixed, open, guards added o
 
 ### 8. Close
 
-Every mode ends here. Write the verification record to the ledger (scope, date, build, judge verdict). Stop simulators, emulators, servers, browsers, and processes this run created; delete simulator clones it made; leave the owner's own devices and sessions alone. Report in this shape:
+Every mode ends here. Write the verification record to the ledger (scope, date, build, judge verdict, quality %). Stop simulators, emulators, servers, browsers, and processes this run created; delete simulator clones it made; leave the owner's own devices and sessions alone. Report in this shape. The first line is the quality %, the target, and who scored it; then one line per dimension with what it lost and the finding that cost it. Label a score with no independent judge `self-scored`.
 
 ```
+Quality 82% (avg 4.13 / 5) · target >= 90% · FAIL · independent judge
 quality-loop · improve · profile: ios-app · build 1.2.0 (14) @ a1b2c3d · 2026-10-09
-Bar: dims >= 4, avg >= 4.3, floors pass · Judge: independent
-Experience 4.5 · Function 4.0 · Consumer 4.5 · Engineering 4.0 → avg 4.25 FAIL
+Bar: dims >= 4, avg >= 4.5 (90%), floors pass · Judge: independent
+Why not higher:
+  Experience 4.5 (-0.5: [UX-6] Korean settings label clipped at the largest text size on SE, settings_se3_ko_xxl.png)
+  Function 4.0 (-1.0: [FN-2] draft lost after kill during save, resume_se3_ko_after_kill.png; fixed this run, re-check next round)
+  Consumer 4.5 (-0.5: [CS-2] 2 of 5 simulated new users stuck on sync sign-in)
+  Engineering 3.5 (-1.5: [EN-3] first frame 620 ms on SE vs 400 ms budget; [EN-1] UI tests not in pre-push)
 Floors: all pass
 Fixed this run (3 rounds): [FN-2] resume after kill lost draft (guard: test_resume_draft) ...
 Open, in order of impact: 1. [EN-3] first frame 620 ms on SE (launch_se3.trace) -> defer font load, target 400 ms

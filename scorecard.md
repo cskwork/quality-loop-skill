@@ -2,7 +2,9 @@
 
 Score each in-scope dimension 1-5 (half points allowed) from receipts of one build. Use the lowest score across devices and languages. A floor breach caps its dimension at 3. A criterion with no receipt is a gap; n/a criteria leave the denominator; a dimension with gaps in more than a quarter of its remaining criteria cannot score above 3. A gap counts against the bar the way a fail does, but it is reported as missing evidence, never as a product defect.
 
-**Default bar:** every in-scope dimension >= 4, average >= 4.3, all floors pass, and for a release candidate the judge's verdict is PASS. The override can raise the bar or drop a dimension the owner verifies personally; it cannot lower a floor.
+**Quality %:** average / 5 x 100, rounded down. A 4.5 average is 90%.
+
+**Default bar:** every in-scope dimension >= 4, average >= 4.5 (quality >= 90%), all floors pass, and for a release candidate the judge's verdict is PASS. The override can raise the bar or drop a dimension the owner verifies personally; it cannot lower a floor.
 
 ## Anchors
 
@@ -35,13 +37,13 @@ Score each in-scope dimension 1-5 (half points allowed) from receipts of one bui
 ```
 Build: <commit / build no. / URL>   Date: <YYYY-MM-DD>   Judge: <self | independent>
 Profile: <ios-app | web | game | ...>   Devices: <smallest> / <largest> / <iPad mode>   Languages: <list>
-Bar: dims >= 4, avg >= 4.3, floors pass
-| Dim         | Score | Floors        | Main receipts               |
-| Experience  |       | F-5 F-6       |                             |
-| Function    |       | F-1 F-2 F-3   |                             |
-| Consumer    |       | F-4 F-7 F-8 F-9 |                           |
-| Engineering |       | F-7 F-10      |                             |
-Average: x.xx   Result: PASS | FAIL
+Bar: dims >= 4, avg >= 4.5 (90%), floors pass
+| Dim         | Score | Lost, and why (finding IDs) | Floors        | Main receipts               |
+| Experience  |       |                             | F-5 F-6       |                             |
+| Function    |       |                             | F-1 F-2 F-3   |                             |
+| Consumer    |       |                             | F-4 F-7 F-8 F-9 |                           |
+| Engineering |       |                             | F-7 F-10      |                             |
+Average: x.xx   Quality: xx%   Result: PASS | FAIL
 Findings, in order of impact:
 1. [FN-2, F-2] blocker: draft lost after kill during save (resume_se3_ko_after_kill.png) -> write to temp file, fsync, rename; guard: test_kill_during_save
 Evidence gaps: <criteria with no receipt>   n/a: <criteria and reason>
@@ -75,10 +77,11 @@ declared data collection matches actual; no deceptive pricing, renewal, pre-sele
 in-product account deletion if accounts exist; no weakened or skipped checks.
 A criterion with no receipt is a gap and blocks PASS; a stale, vacuous (asserts nothing), or flaky receipt counts as FAIL for that criterion. A criterion marked n/a with a reason you accept leaves the count.
 
-Bar: every dimension >= <4>, average >= <4.3>, all floors pass.
+Bar: every dimension >= <4>, average >= <4.5>, all floors pass. Quality % = average / 5 x 100, rounded down.
 
 Output:
-1. PASS or FAIL, average, bar.
+1. PASS or FAIL, quality %, average, bar.
+   For each dimension below 5: the points lost and the findings that cost them.
 2. Score table with the main receipt per dimension.
 3. Findings in order of impact, max 8: criterion ID if known, receipt and position, what is wrong,
    a concrete change with numbers (pt, ms, %, steps).
